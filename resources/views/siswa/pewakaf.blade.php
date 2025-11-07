@@ -34,14 +34,14 @@
                                     <td>{{ $s->nama_siswa }}</td>
                                     <td>{{ $s->kelas->nama ?? '-' }}</td>
                                     <td class="text-center">
+                                        <a href="{{ route('setoran.index', $s->id) }}" class="btn btn-info btn-sm">
+                                            💰 Riwayat Setoran
+                                        </a>
                                         <a href="https://wa.me/{{ $no_hp }}?text={{ $pesan }}" target="_blank"
                                             class="btn btn-success btn-sm">
                                             📩 Kirim WA
                                         </a>
-
-                                        <a href="{{ route('siswa.riwayat', $s->id) }}" class="btn btn-warning btn-sm">
-                                            💰 Riwayat Setoran
-                                        </a>
+                                    </td>
                                     </td>
                                 </tr>
                             @endforeach

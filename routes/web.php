@@ -15,5 +15,16 @@ Route::resource('kelas', KelasController::class);
 Route::get('/siswa/template', [SiswaController::class, 'downloadTemplate'])->name('siswa.template');
 Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
 Route::get('/siswa/pewakaf', [App\Http\Controllers\SiswaController::class, 'pewakaf'])->name('siswa.pewakaf');
+// CRUD Riwayat Setoran
+Route::prefix('siswa/{siswa_id}/setoran')->group(function () {
+    Route::get('/', [App\Http\Controllers\SetoranController::class, 'index'])->name('setoran.index');
+    Route::get('/create', [App\Http\Controllers\SetoranController::class, 'create'])->name('setoran.create');
+    Route::post('/', [App\Http\Controllers\SetoranController::class, 'store'])->name('setoran.store');
+});
+
+Route::get('/setoran/{id}/edit', [App\Http\Controllers\SetoranController::class, 'edit'])->name('setoran.edit');
+Route::put('/setoran/{id}', [App\Http\Controllers\SetoranController::class, 'update'])->name('setoran.update');
+Route::delete('/setoran/{id}', [App\Http\Controllers\SetoranController::class, 'destroy'])->name('setoran.destroy');
+
 Route::get('/siswa/{id}/riwayat', [App\Http\Controllers\SiswaController::class, 'riwayat'])->name('siswa.riwayat');
 Route::resource('siswa', SiswaController::class);
