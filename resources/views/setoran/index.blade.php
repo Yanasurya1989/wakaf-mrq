@@ -15,24 +15,6 @@
             <a href="{{ route('setoran.create', $siswa->id) }}" class="btn btn-success">
                 + Tambah Setoran
             </a>
-
-            @php
-                // Pastikan nomor WA siswa disimpan di kolom 'no_hp' di tabel siswa
-                $no_hp = isset($siswa->no_hp) ? preg_replace('/^0/', '62', $siswa->no_hp) : null;
-
-                $pesan = "Assalamu'alaikum, *{$siswa->nama_siswa}* 🙏%0A%0ATerima kasih atas wakaf yang telah diberikan. Wakaf Anda telah kami terima dengan baik.%0A%0ASemoga Allah membalas dengan pahala berlipat ganda, memberi keberkahan dalam hidup, serta melimpahkan rahmat dan rezeki yang luas.🤲💚%0A%0A_Jazakallah khairan katsiran._";
-            @endphp
-
-            @if ($no_hp)
-                <a href="https://wa.me/{{ $no_hp }}?text={{ $pesan }}" target="_blank"
-                    class="btn btn-success shadow-sm">
-                    📲 Kirim Ucapan Terima Kasih via WhatsApp
-                </a>
-            @else
-                <button class="btn btn-secondary" disabled>
-                    📵 Nomor WA belum tersedia
-                </button>
-            @endif
         </div>
 
         <div class="card shadow-sm">
@@ -45,6 +27,7 @@
                                 <th>Tanggal</th>
                                 <th>Nominal</th>
                                 <th>Keterangan</th>
+                                <th>Pesan WA</th>
                                 <th width="15%">Aksi</th>
                             </tr>
                         </thead>
@@ -55,6 +38,21 @@
                                     <td>{{ \Carbon\Carbon::parse($r->tanggal)->format('d M Y') }}</td>
                                     <td class="text-end">Rp {{ number_format($r->nominal, 0, ',', '.') }}</td>
                                     <td>{{ $r->keterangan ?? '-' }}</td>
+                                    <td class="text-center">
+                                        @php
+                                            $tanggal = \Carbon\Carbon::parse($r->tanggal)->format('d M Y');
+                                            $nominal = number_format($r->nominal, 0, ',', '.');
+                                            $pesan = "Terima kasih sudah berwakaf pada tanggal $tanggal sebesar Rp $nominal. Semoga Allah membalas dengan kebaikan yang berlipat ganda 🤲";
+                                            $pesanEncode = urlencode($pesan);
+                                            $nomorTujuan = $siswa->no_hp ?? '6281234567890';
+                                        @endphp
+
+                                        <a href="https://wa.me/{{ $nomorTujuan }}?text={{ $pesanEncode }}" target="_blank"
+                                            class="btn btn-success btn-sm shadow-sm">
+                                            📱 Kirim WA
+                                        </a>
+                                    </td>
+
                                     <td class="text-center">
                                         <a href="{{ route('setoran.edit', $r->id) }}"
                                             class="btn btn-warning btn-sm">Edit</a>

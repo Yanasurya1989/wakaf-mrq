@@ -50,4 +50,14 @@ class KelasController extends Controller
         $kela->delete();
         return redirect()->route('kelas.index')->with('success', 'Kelas berhasil dihapus.');
     }
+
+    public function show($id)
+    {
+        $kelas = Kelas::with('siswa')->findOrFail($id);
+
+        $totalSiswa = $kelas->siswa->count();
+        $totalPewakaf = $kelas->siswa->where('is_pewakaf', true)->count();
+
+        return view('kelas-detail', compact('kelas', 'totalSiswa', 'totalPewakaf'));
+    }
 }

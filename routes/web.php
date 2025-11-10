@@ -28,3 +28,5 @@ Route::delete('/setoran/{id}', [App\Http\Controllers\SetoranController::class, '
 
 Route::get('/siswa/{id}/riwayat', [App\Http\Controllers\SiswaController::class, 'riwayat'])->name('siswa.riwayat');
 Route::resource('siswa', SiswaController::class);
+
+Route::get('/kelas/{id}', [KelasController::class, 'show'])->name('kelas.show');

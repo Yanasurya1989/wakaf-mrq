@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Setoran;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SetoranController extends Controller
 {
@@ -30,15 +31,21 @@ class SetoranController extends Controller
             'keterangan' => 'nullable|string|max:255',
         ]);
 
+        $tanggal = Carbon::parse($request->tanggal)->format('d M Y');
+        $nominal = 'Rp ' . number_format($request->nominal, 0, ',', '.');
+
+        $pesan = "Terima kasih telah berwakaf pada tanggal {$tanggal} sebesar {$nominal}. Semoga Allah membalas dengan keberkahan dan pahala yang berlipat ganda. 🤲💚";
+
         Setoran::create([
             'siswa_id' => $siswa_id,
             'tanggal' => $request->tanggal,
             'nominal' => $request->nominal,
             'keterangan' => $request->keterangan,
+            'pesan_wa' => $pesan,
         ]);
 
         return redirect()->route('setoran.index', $siswa_id)
-            ->with('success', 'Setoran berhasil ditambahkan.');
+            ->with('success', 'Setoran berhasil ditambahkan dan pesan WA telah disimpan.');
     }
 
     public function edit($id)
@@ -57,10 +64,21 @@ class SetoranController extends Controller
         ]);
 
         $setoran = Setoran::findOrFail($id);
-        $setoran->update($request->only(['tanggal', 'nominal', 'keterangan']));
+
+        $tanggal = Carbon::parse($request->tanggal)->format('d M Y');
+        $nominal = 'Rp ' . number_format($request->nominal, 0, ',', '.');
+
+        $pesan = "Terima kasih telah berwakaf pada tanggal {$tanggal} sebesar {$nominal}. Semoga Allah membalas dengan keberkahan dan pahala yang berlipat ganda. 🤲💚";
+
+        $setoran->update([
+            'tanggal' => $request->tanggal,
+            'nominal' => $request->nominal,
+            'keterangan' => $request->keterangan,
+            'pesan_wa' => $pesan,
+        ]);
 
         return redirect()->route('setoran.index', $setoran->siswa_id)
-            ->with('success', 'Setoran berhasil diperbarui.');
+            ->with('success', 'Setoran berhasil diperbarui dan pesan WA tersimpan.');
     }
 
     public function destroy($id)

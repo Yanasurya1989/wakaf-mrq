@@ -50,6 +50,21 @@
         .subtext {
             color: #6c757d;
         }
+
+        .btn-detail {
+            background-color: #198754;
+            color: #fff;
+            border-radius: 50px;
+            padding: 5px 15px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-detail:hover {
+            background-color: #157347;
+            color: #fff;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -65,14 +80,19 @@
                 <div class="card p-4">
                     @foreach ($kelas as $k)
                         <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
                                 <h5 class="mb-0">{{ $k->nama }}</h5>
-                                <small class="text-muted">
-                                    {{ $k->total_pewakaf }} / {{ $k->total_siswa }} siswa
-                                </small>
+                                <div class="d-flex align-items-center gap-2">
+                                    <small class="text-muted">
+                                        {{ $k->total_pewakaf }} / {{ $k->total_siswa }} siswa
+                                    </small>
+                                    <a href="{{ route('kelas.show', $k->id) }}" class="btn btn-detail">
+                                        <i class="bi bi-people-fill me-1"></i> Lihat Detail
+                                    </a>
+                                </div>
                             </div>
 
-                            <div class="progress">
+                            <div class="progress mt-2">
                                 @if ($k->persentase == 0)
                                     <div class="progress-bar bg-danger text-white fw-bold" style="width: 100%;">
                                         Semangat 💪
